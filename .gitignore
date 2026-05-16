@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+lyriccanvas.exe
+*.exe~
+
+# Environment
+.env
+!.env.example
+
+# Go
+backend/data/*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# DeepSeek TUI
+.deepseek/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# OS
+.DS_Store
+Thumbs.db
