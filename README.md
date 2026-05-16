@@ -5,6 +5,9 @@
 
 ---
 
+<img width="1920" height="919" alt="ScreenShot_2026-05-16_194641_572" src="https://github.com/user-attachments/assets/41565fc2-c0c7-4c6a-a706-f218138f5382" />
+
+
 ## ✨ 功能特性
 
 ### 🎨 可视化歌词画布
