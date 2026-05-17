@@ -12,6 +12,7 @@ lyriccanvas.exe
 
 # Go
 backend/data/*.json
+rsrc_*.syso
 
 # IDE
 .vscode/
