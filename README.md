@@ -145,7 +145,7 @@ lyriccanvas/
 │       │   └── project.ts
 │       └── types/
 │           └── index.ts         # TypeScript 类型定义
-├── .env.example                 # 环境变量模板
+├── backend/.env.example         # 环境变量模板
 ├── .gitignore
 └── README.md
 ```
@@ -170,18 +170,17 @@ cd lyriccanvas
 ### 2. 配置环境变量
 
 ```bash
-cp .env.example .env
+cp backend/.env.example backend/.env
 ```
 
-编辑 `.env` 文件，填入你的 DeepSeek API Key：
+编辑 `backend/.env` 文件，填入你的 DeepSeek API Key：
 
 ```env
 DEEPSEEK_API_KEY=sk-your-api-key-here
 DEEPSEEK_BASE_URL=https://api.deepseek.com
-DEEPSEEK_DEFAULT_MODEL=deepseek-chat
-PORT=8080
+PORT=8848
 DATA_DIR=./data
-ALLOWED_ORIGINS=http://localhost:5173
+ALLOWED_ORIGINS=http://localhost:8848
 ```
 
 ### 3. 构建前端（可选，仅开发时）
@@ -207,7 +206,7 @@ cd backend
 go run .
 ```
 
-启动后访问 **http://localhost:8080**
+启动后访问 **http://localhost:8848**
 
 ### 5. 前端开发模式（可选）
 
@@ -227,9 +226,9 @@ npm run dev        # 启动 Vite 开发服务器 → http://localhost:8848
 | `DEEPSEEK_API_KEY` | DeepSeek API 密钥（**必填**） | - |
 | `DEEPSEEK_BASE_URL` | API 地址 | `https://api.deepseek.com` |
 | `DEEPSEEK_DEFAULT_MODEL` | 默认模型 | `deepseek-chat` |
-| `PORT` | 后端监听端口 | `8080` |
+| `PORT` | 后端监听端口 | `8848` |
 | `DATA_DIR` | 项目数据存储目录 | `./data` |
-| `ALLOWED_ORIGINS` | CORS 允许的前端地址 | `http://localhost:5173` |
+| `ALLOWED_ORIGINS` | CORS 允许的前端地址 | `http://localhost:8848` |
 
 ---
 

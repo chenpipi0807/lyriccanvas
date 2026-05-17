@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, computed, markRaw, onMounted, onUnmounted } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { VueFlow, useVueFlow, SelectionMode } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { useProjectStore } from '@/stores/project'
@@ -179,7 +179,15 @@ function onNodeDragStop(event: any) {
   }
   dragStartPos.value = null
   dragStartSelected.value = []
-  canvasStore.updateNodePosition(node.id, node.position)
+  // 多选拖拽时，同步所有选中节点的位置到 store（VueFlow 内部已移动它们，但只回调了拖拽的那个节点）
+  const sel = (getSelectedNodes.value || []) as any[]
+  if (sel.length > 1) {
+    for (const sn of sel) {
+      canvasStore.updateNodePosition(sn.id, sn.position)
+    }
+  } else {
+    canvasStore.updateNodePosition(node.id, node.position)
+  }
   checkSnap(node)
 }
 
@@ -516,6 +524,7 @@ onUnmounted(() => {
       :max-zoom="4"
       :snap-to-grid="false"
       :selection-key-code="'Control'"
+      :selection-mode="SelectionMode.Partial"
       :nodes-draggable="true"
       :nodes-connectable="false"
       :edges-updatable="false"
