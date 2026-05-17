@@ -1,7 +1,8 @@
 # 🎵 LyricCanvas — AI 驱动的歌词画布创作工具
 
 > 一款基于 **Vue Flow 可视化画布** + **DeepSeek AI** 的中文歌词创作助手。  
-> 在可拖拽的无限画布上自由编排歌词段落，结合 AI 智能补全、润色与押韵联想，让歌词创作如绘画般直观流畅。
+> 在可拖拽的无限画布上自由编排歌词段落，结合 AI 智能补全、润色与押韵联想。  
+> **下载 exe 双击即用，无需安装任何环境。**
 
 ---
 
@@ -38,9 +39,9 @@
 - 项目列表按最近编辑时间排序
 
 ### 🚀 单文件部署
-- Go 后端编译为**单一可执行文件**，内嵌前端静态资源
-- 无需安装 Node.js、无需配置 Web 服务器
-- 开箱即用，一个 exe 即整个应用
+- Go 后端编译为**单一可执行文件**，内嵌前端页面、拼音字典、应用图标
+- 无需安装 Node.js、Go、任何依赖
+- 双击运行，浏览器打开即用 — API Key 在页面设置面板直接填写，无需手动编辑 `.env`
 
 ---
 
@@ -154,78 +155,66 @@ lyriccanvas/
 
 ## 🚀 快速开始
 
-### 前提条件
+### 📦 普通用户（下载即用）
+
+1. 从 [Releases](https://github.com/chenpipi0807/lyriccanvas/releases) 下载 `lyriccanvas.exe`
+2. 双击运行（或终端执行 `.\lyriccanvas.exe`）
+3. 浏览器访问 **http://localhost:8848**
+4. 首次打开自动弹出设置面板 → 填入 [DeepSeek API Key](https://platform.deepseek.com/) → 保存
+5. 开始创作 🎵
+
+> **不需要安装任何东西** — exe 内嵌了前端页面、拼音字典、应用图标，开箱即用。
+
+### 🛠️ 开发者（从源码构建）
+
+#### 前提条件
 
 - **Go** 1.23+
 - **Node.js** 18+（仅开发前端时需要）
-- **DeepSeek API Key** → [获取地址](https://platform.deepseek.com/)
+- [rsrc](https://github.com/akavel/rsrc) — Windows exe 图标工具（`go install github.com/akavel/rsrc@latest`）
 
-### 1. 克隆项目
+#### 1. 克隆项目
 
 ```bash
 git clone https://github.com/chenpipi0807/lyriccanvas.git
 cd lyriccanvas
 ```
 
-### 2. 配置环境变量
-
-```bash
-cp backend/.env.example backend/.env
-```
-
-编辑 `backend/.env` 文件，填入你的 DeepSeek API Key：
-
-```env
-DEEPSEEK_API_KEY=sk-your-api-key-here
-DEEPSEEK_BASE_URL=https://api.deepseek.com
-PORT=8848
-DATA_DIR=./data
-ALLOWED_ORIGINS=http://localhost:8848
-```
-
-### 3. 构建前端（可选，仅开发时）
+#### 2. 构建前端
 
 ```bash
 cd frontend
 npm install
-npm run build      # 产物输出到 ../backend/frontend-dist/
+npm run build          # 产物输出到 ../backend/frontend-dist/
 ```
 
-### 4. 构建并启动后端
+#### 3. 构建并启动后端
 
 ```bash
 cd backend
-go build -o lyriccanvas.exe .
-./lyriccanvas.exe
+.\build.bat            # 编译 exe（含图标嵌入）
+.\lyriccanvas.exe      # 启动，访问 http://localhost:8848
 ```
 
-或直接运行：
-
-```bash
-cd backend
-go run .
-```
-
-启动后访问 **http://localhost:8848**
-
-### 5. 前端开发模式（可选）
-
-如需热更新开发前端：
+#### 4. 前端开发模式（热更新）
 
 ```bash
 cd frontend
-npm run dev        # 启动 Vite 开发服务器 → http://localhost:8848
+npm run dev            # Vite 开发服务器 → http://localhost:8848
 ```
+
+后端 API 代理到 `localhost:5050`，需单独启动后端：`cd backend && go run .`
 
 ---
 
 ## 🔧 环境变量说明
 
+> 💡 普通用户无需手动配置，启动后在页面 ⚙️ 设置面板直接填写 API Key 即可。
+
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
-| `DEEPSEEK_API_KEY` | DeepSeek API 密钥（**必填**） | - |
+| `DEEPSEEK_API_KEY` | DeepSeek API 密钥（**必填**，可在页面设置面板填写） | - |
 | `DEEPSEEK_BASE_URL` | API 地址 | `https://api.deepseek.com` |
-| `DEEPSEEK_DEFAULT_MODEL` | 默认模型 | `deepseek-chat` |
 | `PORT` | 后端监听端口 | `8848` |
 | `DATA_DIR` | 项目数据存储目录 | `./data` |
 | `ALLOWED_ORIGINS` | CORS 允许的前端地址 | `http://localhost:8848` |
