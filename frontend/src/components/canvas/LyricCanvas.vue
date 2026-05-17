@@ -8,6 +8,7 @@ import { useCanvasStore } from '@/stores/canvas'
 import { useChatStore } from '@/stores/chat'
 import LyricNodeComp from './LyricNode.vue'
 import Modal from '@/components/layout/Modal.vue'
+import SettingsModal from '@/components/layout/SettingsModal.vue'
 import type { LyricNode, Position } from '@/types'
 import { parseLyrics } from '@/api/chat'
 import '@vue-flow/core/dist/style.css'
@@ -41,6 +42,7 @@ const syncInterval = setInterval(() => {
 
 // Modal 状态
 const importModal = ref<{ show: boolean; resolve?: (value?: string) => void }>({ show: false })
+const showSettings = ref(false)
 
 function showImportModal(): Promise<string | undefined> {
   return new Promise((resolve) => {
@@ -510,6 +512,7 @@ onUnmounted(() => {
           {{ isParsing ? '⏳ 解析中...' : '🤖 智能解析' }}
         </button>
         <button class="btn-ghost" @click="exportTxt" title="导出完整歌词为 txt 文件">📥 导出 TXT</button>
+        <button class="btn-settings" @click="showSettings = true" title="设置 API Key">⚙️</button>
       </div>
     </div>
 
@@ -576,6 +579,8 @@ onUnmounted(() => {
     @confirm="onImportConfirm"
     @cancel="onImportCancel"
   />
+
+  <SettingsModal v-if="showSettings" @close="showSettings = false" />
 </template>
 
 <style scoped>
@@ -696,5 +701,22 @@ onUnmounted(() => {
 .sel-action:hover {
   background: var(--color-accent-soft);
   color: var(--color-accent);
+}
+
+.btn-settings {
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.btn-settings:hover {
+  color: var(--color-text);
+  background: var(--color-bg-hover);
 }
 </style>

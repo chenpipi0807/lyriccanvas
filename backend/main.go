@@ -27,6 +27,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("配置加载失败: %v", err)
 	}
+	if cfg.DeepSeekAPIKey == "" {
+		log.Printf("⚠️ DeepSeek API Key 未设置，请在页面右上角设置中填写")
+	}
 
 	store, err := services.NewProjectStore(cfg.DataDir)
 	if err != nil {
@@ -43,6 +46,7 @@ func main() {
 	projHandler := handlers.NewProjectHandler(store)
 	chatHandler := handlers.NewChatHandler(dsClient, store)
 	healthHandler := handlers.NewHealthHandler(dsClient, store)
+	configHandler := handlers.NewConfigHandler(dsClient)
 	var rhymeHandler *handlers.RhymeHandler
 	if rhymeSvc != nil {
 		rhymeHandler = handlers.NewRhymeHandler(rhymeSvc)
@@ -63,6 +67,8 @@ func main() {
 	api := r.Group("/api")
 	{
 		api.GET("/health", healthHandler.Check)
+		api.GET("/config", configHandler.GetConfig)
+		api.PUT("/config/apikey", configHandler.SetAPIKey)
 		api.GET("/projects", projHandler.List)
 		api.POST("/projects", projHandler.Create)
 		api.GET("/projects/:id", projHandler.Get)

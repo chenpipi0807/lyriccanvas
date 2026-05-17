@@ -198,8 +198,16 @@ func (c *DeepSeekClient) ChatStream(model string, messages []ChatMessageDS, temp
 
 // ValidateKey 验证 API Key 是否有效
 func (c *DeepSeekClient) ValidateKey() bool {
+	if c.apiKey == "" {
+		return false
+	}
 	_, err := c.Chat("deepseek-v4-flash", []ChatMessageDS{
 		{Role: "user", Content: "Hi"},
 	}, 0, 1)
 	return err == nil
+}
+
+// SetAPIKey 运行时更新 API Key
+func (c *DeepSeekClient) SetAPIKey(apiKey string) {
+	c.apiKey = apiKey
 }
